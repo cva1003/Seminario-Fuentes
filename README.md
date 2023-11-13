@@ -6,5 +6,7 @@ Tambien hemos recogido la cantidad de centros sanitarios por provincia para comp
 
 Datos consultados:
   - Salud en provincias:https://datos.gob.es/es/catalogo/ea0010587-valoracion-del-estado-de-salud-percibido-en-los-ultimos-12-meses-segun-sexo-y-comunidad-autonoma-poblacion-de-15-y-mas-anos-identificador-api-t15-p420-a2019-p01-l0-01004-px1
-  - Cantidad de zonas verdes:
+  
+  - Cantidad de zonas verdes: https://as.com/deporteyvida/2019/05/07/portada/1557226775_767652.html
+  
   - Numero de centros sanitarios: 
