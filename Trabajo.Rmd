@@ -27,7 +27,7 @@ El objetivo principal de nuestro proyecto es determinar una posible relación en
 Tambien vamos a comparar los resultados con la cantidad de centros de salud para contrastar si tambien es un problema por falta de medios sanitarios o solo medioambientales
 
 ## 3.Conjunto de datos
-Hemos recogido datos de bases de datos diferentes, entre ellas encontramos la aemet, el ine, el ministerio de sanidad y el as.
+Hemos recogido datos de bases de datos diferentes, entre ellas encontramos la aemet, el ine, el ministerio de sanidad y el diario AS.
 
 Vamos a trabajar con ellos en el formato .xlsx
 
@@ -44,4 +44,4 @@ defuncion_resp<-defuncion %>%
   filter(1520:1666)
 defuncion_resp
 ```
-
+### 4.2 Importación de datos de la cantidad de zonas verdes
