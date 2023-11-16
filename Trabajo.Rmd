@@ -41,7 +41,30 @@ library(dplyr)
 ```{r defunciones, echo=TRUE}
 defuncion <-read_excel("defunciones.xlsx")
 defuncion_resp<-defuncion %>%
-  filter(1520:1666)
-defuncion_resp
+  slice(1336:1500)%>%
+  select(1,3)
+print(defuncion_resp)
+```
+#### 4.1.1 Datos de defunciones por enfermedades respiratorias total por provincia
+```{r defunciones total, echo=TRUE}
+defuncion_resp_total<-defuncion_resp %>%
+  slice(3:54)%>%
+  select(1,2)
+print(defuncion_resp_total)
+
+```
+#### 4.1.1 Datos de defunciones por enfermedades respiratorias mujeres por provincia
+```{r defunciones mujeres, echo=TRUE}
+defuncion_resp_mujeres<-defuncion_resp %>%
+  slice(113:164)%>%
+  select(1,2)
+print(defuncion_resp_total)
+```
+#### 4.1.1 Datos de defunciones por enfermedades respiratorias hombres por provincia
+```{r defunciones hombres, echo=TRUE}
+defuncion_resp_hombres<-defuncion_resp %>%
+  slice(58:109)%>%
+  select(1,2)
+print(defuncion_resp_total)
 ```
 ### 4.2 Importación de datos de la cantidad de zonas verdes
