@@ -74,7 +74,7 @@ defuncion_resp_hombres<-defuncion_resp %>%
   rename(defunciones_hombres= 2)
 defuncion_resp_hombres
 ```
-
+#### 4.1.4 Histograma de defunciones por enfermedades respiratorias de hombres y mujeres por Provincia
 ```{r}
 
 # combinar
