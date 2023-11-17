@@ -48,7 +48,6 @@ defuncion_resp<-defuncion %>%
   slice(1338:1500)%>%
   select(1,3)%>%
   rename(Provincia = 1, defunciones= 2)
-print(defuncion_resp)
 ```
 #### 4.1.1 Datos de defunciones por enfermedades respiratorias total por Provincia
 ```{r defunciones total, echo=TRUE}
@@ -76,7 +75,6 @@ defuncion_resp_hombres
 ```
 #### 4.1.4 Histograma de defunciones por enfermedades respiratorias de hombres y mujeres por Provincia
 ```{r}
-
 # combinar
 defuncion_resp_combinada <- merge(defuncion_resp_hombres, defuncion_resp_mujeres, by = "Provincia")
 defuncion_resp_combinada$Provincia <- substr(defuncion_resp_combinada$Provincia, 1,3)
@@ -87,29 +85,32 @@ ggplot(defuncion_resp_combinada, aes(x = Provincia)) +
        x = "Provincia",
        y = "Defunciones",
        fill = "Género") +
-<<<<<<< HEAD
-  scale_fill_manual(values = c("Hombres" = "pink", "Mujeres" = "purple"))
-=======
   scale_fill_manual(values = c("Hombres" = "white", "Mujeres" = "purple"))
->>>>>>> 90e133a2d2e56c321ea3e86ed994b8aa6ec484d4
+
 ```
 
 ### 4.2 Importación de datos de la cantidad de zonas verdes
 
-<<<<<<< HEAD
+
 ### 4.3 Número de hospitales por provincia.
+
+```{r conteo por provincia}
+datos <-read_excel("CNH_2021.xlsx")
 conteo_por_provincia <- datos %>%
   group_by(Provincia) %>%
   summarize(Numero_Hospitales = n_distinct(`Nombre Centro`))
 conteo_por_provincia
+```
 
 #### 4.3.1 Gráfico de barras del número de hospitales por provincia
+```{r grafico}
 ggplot(conteo_por_provincia, aes(x = Provincia, y = Numero_Hospitales)) +
-  geom_bar(stat = "identity", fill = "blue") +
+  geom_bar(stat = "identity", fill = "green") +
   labs(title = "Número de Hospitales por Provincia",
        x = "Provincia",
        y = "Número de Hospitales") +
   theme_minimal()
-=======
->>>>>>> 90e133a2d2e56c321ea3e86ed994b8aa6ec484d4
+
+
+```
 
