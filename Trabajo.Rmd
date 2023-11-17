@@ -87,7 +87,7 @@ ggplot(defuncion_resp_combinada, aes(x = Provincia)) +
        x = "Provincia",
        y = "Defunciones",
        fill = "Género") +
-  scale_fill_manual(values = c("Hombres" = "pink", "Mujeres" = "purple"))
+  scale_fill_manual(values = c("Hombres" = "white", "Mujeres" = "purple"))
 ```
 
 ### 4.2 Importación de datos de la cantidad de zonas verdes
