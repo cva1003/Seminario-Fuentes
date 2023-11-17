@@ -91,3 +91,17 @@ ggplot(defuncion_resp_combinada, aes(x = Provincia)) +
 ```
 
 ### 4.2 Importación de datos de la cantidad de zonas verdes
+
+### 4.3 Número de hospitales por provincia.
+conteo_por_provincia <- datos %>%
+  group_by(Provincia) %>%
+  summarize(Numero_Hospitales = n_distinct(`Nombre Centro`))
+conteo_por_provincia
+
+#### 4.3.1 Gráfico de barras del número de hospitales por provincia
+ggplot(conteo_por_provincia, aes(x = Provincia, y = Numero_Hospitales)) +
+  geom_bar(stat = "identity", fill = "blue") +
+  labs(title = "Número de Hospitales por Provincia",
+       x = "Provincia",
+       y = "Número de Hospitales") +
+  theme_minimal()
