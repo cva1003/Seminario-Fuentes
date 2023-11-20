@@ -41,6 +41,7 @@ En primer lugar, vamos a realizar una exposición principal de todos los datos r
 ```{r librerias, echo=TRUE}
 library(readxl)
 library(dplyr)
+library(tidyverse)#preguntar si con este es sufi
 library(ggplot2)
 ```
 ### 4.1Datos de defunciones por enfermedades respiratorias
@@ -92,6 +93,16 @@ ggplot(defuncion_resp_combinada, aes(x = Provincia)) +
 ```
 
 ### 4.2 Importación de datos de la cantidad de zonas verdes
+```{r}
+zonas_verdes<- read_excel("zonas_verdes.xlsx")
+```
+
+
+```{r}
+#histograma preguntar
+ggplot(zonas_verdes, aes(x= Ciudad, y=`Total (km²)`))+ geom_bar(stat = "identity",fill = "green", color = "black", alpha = 0.7) +
+  labs(title = "Histograma de zonas verdes", x = "provincia", y = "% zonas verdes/habitan")
+```
 
 
 ### 4.3 Número de hospitales por provincia.
@@ -116,5 +127,4 @@ ggplot(conteo_por_provincia, aes(x = Provincia, y = Numero_Hospitales)) +
 
 
 ```
-
-
+### 4.4 Lluvias por provincia
