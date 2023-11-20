@@ -42,10 +42,9 @@ Importación de librerias
 library(readxl)
 library(dplyr)
 #<<<<<<< HEAD
-library(tidyverse)#preguntar si con este es sufi
-#=======
-#>>>>>>> e88ecb39bdfb2b4bec10f9c0d0d0818051e18f05
-library(ggplot2)
+library(tidyverse)
+
+
 ```
 ### 4.1Datos de defunciones por enfermedades respiratorias
 ```{r defunciones, echo=TRUE}
