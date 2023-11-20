@@ -41,10 +41,10 @@ Importación de librerias
 ```{r librerias, echo=TRUE}
 library(readxl)
 library(dplyr)
-<<<<<<< HEAD
+#<<<<<<< HEAD
 library(tidyverse)#preguntar si con este es sufi
-=======
->>>>>>> e88ecb39bdfb2b4bec10f9c0d0d0818051e18f05
+#=======
+#>>>>>>> e88ecb39bdfb2b4bec10f9c0d0d0818051e18f05
 library(ggplot2)
 ```
 ### 4.1Datos de defunciones por enfermedades respiratorias
@@ -99,11 +99,14 @@ ggplot(defuncion_resp_combinada, aes(x = Provincia)) +
 <<<<<<< HEAD
 ```{r}
 zonas_verdes<- read_excel("zonas_verdes.xlsx")
+```
+
+
+```{r}
 #histograma preguntar
-ggplot(data= zonas_verdes, aex(x= Ciudad, y= Total (km^2)))+ geom_histogram(binwidth = 0.5, fill = "green", color = "black", alpha = 0.7) +
+ggplot(zonas_verdes, aes(x= Ciudad, y=`Total (km²)`))+ geom_bar(stat = "identity",fill = "green", color = "black", alpha = 0.7) +
   labs(title = "Histograma de zonas verdes", x = "provincia", y = "% zonas verdes/habitan")
 ```
-=======
 
 
 ### 4.3 Número de hospitales por provincia.
