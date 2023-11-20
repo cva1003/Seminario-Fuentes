@@ -116,8 +116,5 @@ ggplot(conteo_por_provincia, aes(x = Provincia, y = Numero_Hospitales)) +
 
 
 ```
-### 4.4 Lluvias por provincia 
-```{r}
 
-```
 
