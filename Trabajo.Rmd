@@ -4,7 +4,7 @@ author: "Claudia Valentín, Nisrine Fariss, Jacinto Javier Perez"
 date: "`r Sys.Date()`"
 output: 
   html_document:
-    fig_width: 16  # Ancho de la figura en pulgadas
+    fig_width: 16 
     fig_height: 6
 ---
 
@@ -35,15 +35,13 @@ Hemos recogido datos de bases de datos diferentes, entre ellas encontramos la ae
 Vamos a trabajar con ellos en el formato .xlsx
 
 ## 4.Desarrollo y Resultados
-En primer lugar, Vamos a realizar una exposición principal de todos los datos recabados para luego modificarlos y trabajar con ellos.
+En primer lugar, vamos a realizar una exposición principal de todos los datos recabados para luego modificarlos y trabajar con ellos.
 
-Importación de librerias
+**Importación de librerias**
 ```{r librerias, echo=TRUE}
 library(readxl)
 library(dplyr)
-#<<<<<<< HEAD
 library(tidyverse)
-
 
 ```
 ### 4.1Datos de defunciones por enfermedades respiratorias
@@ -95,7 +93,6 @@ ggplot(defuncion_resp_combinada, aes(x = Provincia)) +
 ```
 
 ### 4.2 Importación de datos de la cantidad de zonas verdes
-<<<<<<< HEAD
 ```{r}
 zonas_verdes<- read_excel("zonas_verdes.xlsx")
 ```
@@ -130,5 +127,4 @@ ggplot(conteo_por_provincia, aes(x = Provincia, y = Numero_Hospitales)) +
 
 
 ```
-
->>>>>>> e88ecb39bdfb2b4bec10f9c0d0d0818051e18f05
+### 4.4 Lluvias por provincia
