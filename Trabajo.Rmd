@@ -43,38 +43,42 @@ library(readxl)
 library(dplyr)
 library(tidyverse)#preguntar si con este es sufi
 library(ggplot2)
+library(climaemet)
+
 ```
 ### 4.1Datos de defunciones por enfermedades respiratorias
 ```{r defunciones, echo=TRUE}
 defuncion <-read_excel("defunciones.xlsx")
 defuncion_resp<-defuncion %>%
-  slice(1338:1500)%>%
+  slice(1337:1500)%>%
   select(1,3)%>%
   rename(Provincia = 1, defunciones= 2)
 ```
 #### 4.1.1 Datos de defunciones por enfermedades respiratorias total por Provincia
 ```{r defunciones total, echo=TRUE}
 defuncion_resp_total<-defuncion_resp %>%
-  slice(3:54)%>%
+  slice(2:53)%>%
   select(1,2)
-defuncion_resp_total
+
+knitr::kable(defuncion_resp_total)
 
 ```
 #### 4.1.2 Datos de defunciones por enfermedades respiratorias mujeres por Provincia
 ```{r defunciones mujeres, echo=TRUE}
 defuncion_resp_mujeres<-defuncion_resp %>%
-  slice(113:164)%>%
+  slice(112:163)%>%
   select(1,2)%>%
   rename(defunciones_mujeres= 2)
-defuncion_resp_mujeres
+knitr::kable(defuncion_resp_mujeres)
 ```
 #### 4.1.3 Datos de defunciones por enfermedades respiratorias hombres por Provincia
 ```{r defunciones hombres, echo=TRUE}
 defuncion_resp_hombres<-defuncion_resp %>%
-  slice(58:109)%>%
+  slice(57:108)%>%
   select(1,2)%>%
   rename(defunciones_hombres= 2)
-defuncion_resp_hombres
+
+knitr::kable(defuncion_resp_hombres)
 ```
 #### 4.1.4 Histograma de defunciones por enfermedades respiratorias de hombres y mujeres por Provincia
 ```{r}
@@ -100,7 +104,8 @@ zonas_verdes<- read_excel("zonas_verdes.xlsx")
 
 ```{r}
 #histograma preguntar
-ggplot(zonas_verdes, aes(x= Ciudad, y=`Total (km²)`))+ geom_bar(stat = "identity",fill = "green", color = "black", alpha = 0.7) +
+zonas_verdes$Ciudad <- substr(zonas_verdes$Ciudad, 1,3)
+ggplot(zonas_verdes, aes(x= Ciudad, y=`Total (km²)`))+ geom_bar(stat = "identity",fill = "green", alpha = 0.7) +
   labs(title = "Histograma de zonas verdes", x = "provincia", y = "% zonas verdes/habitan")
 ```
 
@@ -127,4 +132,9 @@ ggplot(conteo_por_provincia, aes(x = Provincia, y = Numero_Hospitales)) +
 
 
 ```
+
 ### 4.4 Lluvias por provincia
+```{r Lluvias por provincia}
+
+```
+
