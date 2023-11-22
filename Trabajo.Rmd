@@ -4,7 +4,7 @@ author: "Claudia Valentín, Nisrine Fariss, Jacinto Javier Perez"
 date: "`r Sys.Date()`"
 output: 
   html_document:
-    fig_width: 16  # Ancho de la figura en pulgadas
+    fig_width: 16 
     fig_height: 6
 ---
 
@@ -35,48 +35,53 @@ Hemos recogido datos de bases de datos diferentes, entre ellas encontramos la ae
 Vamos a trabajar con ellos en el formato .xlsx
 
 ## 4.Desarrollo y Resultados
-Importación de librerias
+En primer lugar, vamos a realizar una exposición principal de todos los datos recabados para luego modificarlos y trabajar con ellos.
+
+**Importación de librerias**
 ```{r librerias, echo=TRUE}
 library(readxl)
 library(dplyr)
+library(tidyverse)#preguntar si con este es sufi
 library(ggplot2)
+library(tidyverse)
+
 ```
 ### 4.1Datos de defunciones por enfermedades respiratorias
 ```{r defunciones, echo=TRUE}
 defuncion <-read_excel("defunciones.xlsx")
 defuncion_resp<-defuncion %>%
-  slice(1338:1500)%>%
+  slice(1337:1500)%>%
   select(1,3)%>%
   rename(Provincia = 1, defunciones= 2)
-print(defuncion_resp)
 ```
 #### 4.1.1 Datos de defunciones por enfermedades respiratorias total por Provincia
 ```{r defunciones total, echo=TRUE}
 defuncion_resp_total<-defuncion_resp %>%
-  slice(3:54)%>%
+  slice(2:53)%>%
   select(1,2)
-defuncion_resp_total
+
+knitr::kable(defuncion_resp_total)
 
 ```
 #### 4.1.2 Datos de defunciones por enfermedades respiratorias mujeres por Provincia
 ```{r defunciones mujeres, echo=TRUE}
 defuncion_resp_mujeres<-defuncion_resp %>%
-  slice(113:164)%>%
+  slice(112:163)%>%
   select(1,2)%>%
   rename(defunciones_mujeres= 2)
-defuncion_resp_mujeres
+knitr::kable(defuncion_resp_mujeres)
 ```
 #### 4.1.3 Datos de defunciones por enfermedades respiratorias hombres por Provincia
 ```{r defunciones hombres, echo=TRUE}
 defuncion_resp_hombres<-defuncion_resp %>%
-  slice(58:109)%>%
+  slice(57:108)%>%
   select(1,2)%>%
   rename(defunciones_hombres= 2)
-defuncion_resp_hombres
+
+knitr::kable(defuncion_resp_hombres)
 ```
 #### 4.1.4 Histograma de defunciones por enfermedades respiratorias de hombres y mujeres por Provincia
 ```{r}
-
 # combinar
 defuncion_resp_combinada <- merge(defuncion_resp_hombres, defuncion_resp_mujeres, by = "Provincia")
 defuncion_resp_combinada$Provincia <- substr(defuncion_resp_combinada$Provincia, 1,3)
@@ -87,14 +92,32 @@ ggplot(defuncion_resp_combinada, aes(x = Provincia)) +
        x = "Provincia",
        y = "Defunciones",
        fill = "Género") +
-  scale_fill_manual(values = c("Hombres" = "pink", "Mujeres" = "purple"))
+
+
+
+  scale_fill_manual(values = c("Hombres" = "white", "Mujeres" = "purple"))
+
 ```
 
 ### 4.2 Importación de datos de la cantidad de zonas verdes
+```{r}
+zonas_verdes<- read_excel("zonas_verdes.xlsx")
+```
+
+
+```{r}
+#histograma preguntar
+zonas_verdes$Ciudad <- substr(zonas_verdes$Ciudad, 1,3)
+ggplot(zonas_verdes, aes(x= Ciudad, y=`Total (km²)`))+ geom_bar(stat = "identity",fill = "green", alpha = 0.7) +
+  labs(title = "Histograma de zonas verdes", x = "provincia", y = "% zonas verdes/habitan")
+```
+
 
 ### 4.3 Número de hospitales por provincia.
 
-```{r}
+<<<<<<< HEAD
+```{r conteo por provincia}
+datos <-read_excel("CNH_2021.xlsx")
 conteo_por_provincia <- datos %>%
   group_by(Provincia) %>%
   summarize(Numero_Hospitales = n_distinct(`Nombre Centro`))
@@ -102,13 +125,24 @@ conteo_por_provincia
 ```
 
 #### 4.3.1 Gráfico de barras del número de hospitales por provincia
+<<<<<<< HEAD
+```{r grafico}
+conteo_por_provincia$Provincia <- substr(conteo_por_provincia$Provincia, 1,3)
 
-```{r}
 ggplot(conteo_por_provincia, aes(x = Provincia, y = Numero_Hospitales)) +
-  geom_bar(stat = "identity", fill = "blue") +
+  geom_bar(stat = "identity", fill = "green") +
   labs(title = "Número de Hospitales por Provincia",
        x = "Provincia",
        y = "Número de Hospitales") +
   theme_minimal()
+
+
+
+```
+
+### 4.4 Lluvias por provincia
+```{r Lluvias por provincia}
+
+
 ```
 
