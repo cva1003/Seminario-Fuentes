@@ -41,13 +41,10 @@ En primer lugar, vamos a realizar una exposición principal de todos los datos r
 ```{r librerias, echo=TRUE}
 library(readxl)
 library(dplyr)
-<<<<<<< HEAD
 library(tidyverse)#preguntar si con este es sufi
 library(ggplot2)
 library(climaemet)
-=======
 library(tidyverse)
->>>>>>> fb42bbcb90d4a981a2281334ed8437683a376951
 
 ```
 ### 4.1Datos de defunciones por enfermedades respiratorias
