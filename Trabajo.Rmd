@@ -87,29 +87,28 @@ ggplot(defuncion_resp_combinada, aes(x = Provincia)) +
        x = "Provincia",
        y = "Defunciones",
        fill = "Género") +
-<<<<<<< HEAD
   scale_fill_manual(values = c("Hombres" = "pink", "Mujeres" = "purple"))
-=======
-  scale_fill_manual(values = c("Hombres" = "white", "Mujeres" = "purple"))
->>>>>>> 90e133a2d2e56c321ea3e86ed994b8aa6ec484d4
 ```
 
 ### 4.2 Importación de datos de la cantidad de zonas verdes
 
-<<<<<<< HEAD
 ### 4.3 Número de hospitales por provincia.
+
+```{r}
 conteo_por_provincia <- datos %>%
   group_by(Provincia) %>%
   summarize(Numero_Hospitales = n_distinct(`Nombre Centro`))
 conteo_por_provincia
+```
 
 #### 4.3.1 Gráfico de barras del número de hospitales por provincia
+
+```{r}
 ggplot(conteo_por_provincia, aes(x = Provincia, y = Numero_Hospitales)) +
   geom_bar(stat = "identity", fill = "blue") +
   labs(title = "Número de Hospitales por Provincia",
        x = "Provincia",
        y = "Número de Hospitales") +
   theme_minimal()
-=======
->>>>>>> 90e133a2d2e56c321ea3e86ed994b8aa6ec484d4
+```
 
