@@ -41,14 +41,16 @@ En primer lugar, vamos a realizar una exposición principal de todos los datos r
 ```{r librerias, echo=TRUE}
 library(readxl)
 library(dplyr)
-library(tidyverse)#preguntar si con este es sufi
+library(tidyverse)
 library(ggplot2)
 library(tidyverse)
 
 ```
 ### 4.1Datos de defunciones por enfermedades respiratorias
 ```{r defunciones, echo=TRUE}
+library(readxl)
 defuncion <-read_excel("defunciones.xlsx")
+defuncion
 defuncion_resp<-defuncion %>%
   slice(1337:1500)%>%
   select(1,3)%>%
@@ -101,8 +103,12 @@ ggplot(defuncion_resp_combinada, aes(x = Provincia)) +
 
 ### 4.2 Importación de datos de la cantidad de zonas verdes
 ```{r}
+library(readxl)
 zonas_verdes <- read_excel("zonas_verdes.xlsx")
-
+zonas_verdes
+zonas_verdes1<- zonas_verdes %>%
+  rename(Provincia = Ciudad)
+zonas_verdes1
 ```
 
 
@@ -164,8 +170,20 @@ data_annual <- data_monthly %>%
 ```
 ### 4.5 Filtración de datos
 ```{r Filtracion}
-Zona_defu <- inner_join(x=defuncion_resp_total,y=zonas_verdes)
+library(dplyr)
 
-knitr::kable(Zona_defu)
+# Cargar los datos desde los archivos Excel
+
+
+# Especificar la columna común para combinar
+columna_comun <- "Provincia"
+
+combinados <- merge(zonas_verdes1, defuncion_resp_combinada, by = columna_comun)
+
+combinados
+
+
+knitr::kable(combinados)
+
 ```
 
