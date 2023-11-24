@@ -101,31 +101,33 @@ ggplot(defuncion_resp_combinada, aes(x = Provincia)) +
 
 ### 4.2 Importación de datos de la cantidad de zonas verdes
 ```{r}
-zonas_verdes<- read_excel("zonas_verdes.xlsx")
+zonas_verdes <- read_excel("zonas_verdes.xlsx")
+
 ```
 
 
 ```{r}
-#histograma preguntar
-zonas_verdes$Ciudad <- substr(zonas_verdes$Ciudad, 1,3)
-ggplot(zonas_verdes, aes(x= Ciudad, y=`Total (km²)`))+ geom_bar(stat = "identity",fill = "green", alpha = 0.7) +
-  labs(title = "Histograma de zonas verdes", x = "provincia", y = "% zonas verdes/habitan")
+Zonas_verdes_3 <- zonas_verdes
+Zonas_verdes_3$Ciudad <- substr(Zonas_verdes_3$Ciudad, 1,3)
+ggplot(Zonas_verdes_3, aes(x= Ciudad, y=`Parques m²/hab`))+ geom_bar(stat = "identity",fill = "green", alpha = 0.7) +
+  labs(title = "Zonas verdes", x = "provincia", y = "m^2/habitan")
+zonas_verdes<- zonas_verdes%>%
+  rename(Provincia=1)
 ```
 
 
 ### 4.3 Número de hospitales por provincia.
 
-<<<<<<< HEAD
 ```{r conteo por provincia}
 datos <-read_excel("CNH_2021.xlsx")
 conteo_por_provincia <- datos %>%
   group_by(Provincia) %>%
   summarize(Numero_Hospitales = n_distinct(`Nombre Centro`))
-conteo_por_provincia
+knitr::kable(conteo_por_provincia)
 ```
 
 #### 4.3.1 Gráfico de barras del número de hospitales por provincia
-<<<<<<< HEAD
+
 ```{r grafico}
 conteo_por_provincia$Provincia <- substr(conteo_por_provincia$Provincia, 1,3)
 
@@ -144,5 +146,11 @@ ggplot(conteo_por_provincia, aes(x = Provincia, y = Numero_Hospitales)) +
 ```{r Lluvias por provincia}
 
 
+```
+### 4.5 Filtración de datos
+```{r Filtracion}
+Zona_defu <- inner_join(x=defuncion_resp_total,y=zonas_verdes)
+
+knitr::kable(Zona_defu)
 ```
 
