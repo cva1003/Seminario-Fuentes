@@ -209,6 +209,7 @@ ggplot(data = combinados, aes(x = `Parques m²/hab`, y =defunciones))+
 ```
 
 
+
 ```{r Filtracion}
 
 library(ggplot2)
@@ -216,3 +217,24 @@ ggplot(data = combinados, aes(x = `Parques m²/hab`, y =defunciones))+
   geom_point(aes(colour = Provincia))+
   geom_smooth(colour = "black")+#linea de tendencia
   labs(x = "Porcentaje zonas verdes", y = "Numero de defunciones")
+```
+# Rename de una columna
+```{r}
+datos_zonas_verdes <- read_excel("zonas_verdes.xlsx")
+datos_zonas_verdes <- datos_zonas_verdes %>%
+  rename(Provincia = Ciudad)
+```
+
+
+### 4.7 Filtración hospitales con la cantidad de zonas verdes
+```{r}
+
+datos_hospitales <- read_excel("CNH_2021.xlsx") 
+datos_zonas_verdes <- read_excel("zonas_verdes.xlsx")
+datos_combinados <- left_join(datos_hospitales, datos_zonas_verdes, by = "Provincia")
+# Por ejemplo, filtra hospitales con más de 5 m² de zonas verdes por habitante
+hospitales_con_zonas_verdes <- datos_combinados %>%
+  filter(`Parques m²/hab` > 5)
+print(hospitales_con_zonas_verdes)
+```
+
