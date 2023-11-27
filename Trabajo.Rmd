@@ -43,8 +43,6 @@ library(readxl)
 library(dplyr)
 library(tidyverse)
 library(ggplot2)
-library(tidyverse)
-
 ```
 ### 4.1Datos de defunciones por enfermedades respiratorias
 ```{r defunciones, echo=TRUE}
