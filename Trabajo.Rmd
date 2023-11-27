@@ -162,7 +162,9 @@ estaciones
 
 
 ```{r Lluvias por provincia}
-data_monthly <- aemet_monthly_clim(station = estaciones$indicativo, year=2022)
+#data_monthly <- aemet_monthly_clim(station = estaciones$indicativo, year=2022)
+data_monthly <- aemet_monthly_clim(station = c("9434"), year=2022)
+data_monthly
 ```
 
 
@@ -195,7 +197,7 @@ combinados <- merge(zonas_verdes1, defuncion_resp_combinada, by = columna_comun)
 combinados
 
 
-knitr::kable(combinados)
+knitr::kable(combinados)# paquete DT CAMBIAR https://rstudio.github.io/DT/
 
 ```
 
