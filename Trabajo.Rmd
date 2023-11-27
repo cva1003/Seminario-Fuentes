@@ -158,15 +158,27 @@ aemet_api_key("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjbGF1ZGlhdmFsZ3VAZ21haWwuY29tIiwi
 estaciones<- aemet_stations()
 
 estaciones
+```
 
-data_monthly <- aemet_monthly_clim(estaciones, year = 2022)
+
+```{r Lluvias por provincia}
+data_monthly <- aemet_monthly_clim(station = estaciones$indicativo, year=2022)
+```
+
+
+```{r Lluvias por provincia}
 data_annual <- data_monthly %>%
-  group_by(Year = lubridate::year(Date)) %>%
-  summarize(
+  group_by(Provincia) %>%
+  summarise(
     Total_Precipitation = sum(p_max))
+```
 
 
+```{r Lluvias por provincia}
+```
 
+
+```{r Lluvias por provincia}
 ```
 ### 4.5 Filtración de datos
 ```{r Filtracion}
@@ -179,7 +191,7 @@ library(dplyr)
 columna_comun <- "Provincia"
 
 combinados <- merge(zonas_verdes1, defuncion_resp_combinada, by = columna_comun)
-
+#mutar las provincias para que sean iguales zar=zaragoza.
 combinados
 
 
