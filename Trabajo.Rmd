@@ -144,8 +144,6 @@ ggplot(conteo_por_provincia, aes(x = Provincia, y = Numero_Hospitales)) +
        y = "Número de Hospitales") +
   theme_minimal()
 
-
-
 ```
 
 ### 4.4 Lluvias por provincia
@@ -156,21 +154,77 @@ library(lubridate)
 
 aemet_api_key("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjbGF1ZGlhdmFsZ3VAZ21haWwuY29tIiwianRpIjoiMTU3MmFlYmMtNDU0My00ZjJiLTgyYjgtY2M0NTI2NWY2YTNmIiwiaXNzIjoiQUVNRVQiLCJpYXQiOjE2OTkyNjIzMDUsInVzZXJJZCI6IjE1NzJhZWJjLTQ1NDMtNGYyYi04MmI4LWNjNDUyNjVmNmEzZiIsInJvbGUiOiIifQ.X2uwTqNh9qDeaoVJSlEgO4oCN_YpqRAVRlgxsV0BUtU",install=TRUE, overwrite = TRUE)
 estaciones<- aemet_stations()
-
+colnames(estaciones)
+levels(estaciones$provincia)
+valores_unicos <- unique(estaciones$provincia)
+valores_unicos
+summary(estaciones)
 estaciones
 ```
 
-
-```{r Lluvias por provincia}
-# Supongamos que tienes un dataframe llamado 'datos' y una columna llamada 'columna'
+```{r}
 vector_resultado <- estaciones$indicativo
 vector_resultado
 
-vector <- subset(station, select = indicativo)
+```
 
-data_monthly<- aemet_monthly_clim(station=estaciones$indicativo, year=2022)
-data_monthly <- aemet_monthly_clim(station = c( "1351",  "1400", "1473A", "1428",  "1475X", "1212E", "1283U"), year=2022)
-data_monthly
+```{r Lluvias por provincia}
+#datos climatogicos por cada estacion en cada provincia
+data_monthlysi <- aemet_monthly_clim(station=estaciones$indicativo, year = 2022)
+data_monthlysi
+summary(data_monthlysi)
+colnames(data_monthlysi)
+str(data_monthlysi)
+
+```
+```{r}
+library(dplyr)
+data_monthlysi
+str(data_monthlysi)
+#promedio de lluvias por cada estacion
+data_monthlyprom <- data_monthlysi %>%
+  group_by(indicativo) %>%
+  summarize(promedio_precipitacion = mean(p_mes, na.rm = TRUE))
+data_monthlyprom#son litros/m^2
+```
+
+### Asociacion a cada provincias
+```{r}
+library(dplyr)
+resultado <- dplyr::left_join(data_monthlyprom, estaciones, by = "indicativo") %>%
+  dplyr::select(indicativo, provincia, everything())
+resultado
+```
+
+### Agrupacion por provincia
+```{r}
+# Seleccionar un rango de columnas
+datos_interes <- resultado %>% group_by(provincia)%>%
+  select(indicativo, provincia, altitud, promedio_precipitacion )
+datos_interes
+```
+
+
+```{r}
+#obtencion datos para el grafico
+datos_grafico<- datos_interes%>% group_by(provincia)%>%
+summarize(altitu_media = mean(altitud, na.rm = TRUE),
+    precip_total = sum(promedio_precipitacion, na.rm = TRUE))
+datos_grafico
+```
+
+### Grafico de precipitaciones
+```{r}
+library(ggplot2)
+
+ggplot(datos_grafico, aes(x = provincia, y = precip_total, color = altitu_media)) +
+  geom_point(size = 3) +
+  scale_color_gradient(low = "blue", high = "red") +
+  labs(title = "Precipitación y altitud por provincia",
+       x = "Provincia",
+       y = "Precipitación Total",
+       color = "Altitud Media") +
+  theme(axis.text.x = element_text(angle = 90, hjust =1, size = 6))
 ```
 
 ### 4.5 Filtración de datos
