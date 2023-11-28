@@ -45,6 +45,8 @@ library(tidyverse)
 library(ggplot2)
 library(climaemet)
 library(lubridate)
+library(htmltools)
+library(DT)
 
 ```
 ### 4.1Datos de defunciones por enfermedades respiratorias
@@ -54,7 +56,7 @@ defuncion_resp<-defuncion %>%
   slice(1337:1500)%>%
   select(1,3)%>%
   rename(Provincia = 1, defunciones= 2)
-datable(defuncion_resp)
+datatable(defuncion_resp)
 
 ```
 #### 4.1.1 Datos de defunciones por enfermedades respiratorias total por Provincia
@@ -63,7 +65,7 @@ defuncion_resp_total<-defuncion_resp %>%
   slice(2:53)%>%
   select(1,2)
 defuncion_resp_total
-knitr::kable(defuncion_resp_total)
+datatable(defuncion_resp_total)
 
 ```
 #### 4.1.2 Datos de defunciones por enfermedades respiratorias mujeres por Provincia
@@ -72,7 +74,7 @@ defuncion_resp_mujeres<-defuncion_resp %>%
   slice(112:163)%>%
   select(1,2)%>%
   rename(defunciones_mujeres= 2)
-knitr::kable(defuncion_resp_mujeres)
+datatable(defuncion_resp_mujeres)
 ```
 #### 4.1.3 Datos de defunciones por enfermedades respiratorias hombres por Provincia
 ```{r defunciones hombres, echo=TRUE}
@@ -82,7 +84,7 @@ defuncion_resp_hombres<-defuncion_resp %>%
   select(1,2)%>%
   rename(defunciones_hombres= 2)
 
-knitr::kable(defuncion_resp_hombres)
+datatable(defuncion_resp_hombres)
 ```
 
 #### 4.1.4 Histograma de defunciones por enfermedades respiratorias de hombres y mujeres por Provincia
@@ -126,7 +128,7 @@ datos <-read_excel("CNH_2021.xlsx")
 conteo_por_provincia <- datos %>%
   group_by(Provincia) %>%
   summarize(Numero_Hospitales = n_distinct(`Nombre Centro`))
-knitr::kable(conteo_por_provincia)
+datatable(conteo_por_provincia)
 ```
 
 #### 4.3.1 Gráfico de barras del número de hospitales por provincia
@@ -145,7 +147,7 @@ ggplot(conteo_por_provincia, aes(x = Provincia, y = Numero_Hospitales)) +
 
 ### 4.4 Lluvias por provincia
 ```{r Lluvias por provincia}
-#aemet_api_key("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjbGF1ZGlhdmFsZ3VAZ21haWwuY29tIiwianRpIjoiMTU3MmFlYmMtNDU0My00ZjJiLTgyYjgtY2M0NTI2NWY2YTNmIiwiaXNzIjoiQUVNRVQiLCJpYXQiOjE2OTkyNjIzMDUsInVzZXJJZCI6IjE1NzJhZWJjLTQ1NDMtNGYyYi04MmI4LWNjNDUyNjVmNmEzZiIsInJvbGUiOiIifQ.X2uwTqNh9qDeaoVJSlEgO4oCN_YpqRAVRlgxsV0BUtU",install=TRUE, overwrite = TRUE)
+aemet_api_key("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjbGF1ZGlhdmFsZ3VAZ21haWwuY29tIiwianRpIjoiMTU3MmFlYmMtNDU0My00ZjJiLTgyYjgtY2M0NTI2NWY2YTNmIiwiaXNzIjoiQUVNRVQiLCJpYXQiOjE2OTkyNjIzMDUsInVzZXJJZCI6IjE1NzJhZWJjLTQ1NDMtNGYyYi04MmI4LWNjNDUyNjVmNmEzZiIsInJvbGUiOiIifQ.X2uwTqNh9qDeaoVJSlEgO4oCN_YpqRAVRlgxsV0BUtU",install=TRUE, overwrite = TRUE)
 estaciones<- aemet_stations()
 colnames(estaciones)
 levels(estaciones$provincia)
@@ -163,11 +165,11 @@ vector_resultado
 
 ```{r Lluvias por provincias}
 #datos climatogicos por cada estacion en cada provincia
-data_monthlysi <- aemet_monthly_clim(station=estaciones$indicativo, year = 2022)
-data_monthlysi
+data_monthlysi <- aemet_monthly_clim(station=estaciones$indicativo, year = 2020)
 summary(data_monthlysi)
 colnames(data_monthlysi)
 str(data_monthlysi)
+datatable(data_monthlysi)
 
 ```
 ```{r}
@@ -182,9 +184,9 @@ data_monthlyprom#son litros/m^2
 
 ### Asociacion a cada provincias
 ```{r}
-resultado <- dplyr::left_join(data_monthlyprom, estaciones, by = "indicativo") %>%
-  dplyr::select(indicativo, provincia, everything())
-resultado
+resultado <- left_join(data_monthlyprom, estaciones, by = "indicativo") %>%
+  select(indicativo, provincia, everything())
+datatable(resultado)
 ```
 
 ### Agrupacion por provincia
@@ -201,7 +203,7 @@ datos_interes
 datos_grafico<- datos_interes%>% group_by(provincia)%>%
 summarize(altitu_media = mean(altitud, na.rm = TRUE),
     precip_total = sum(promedio_precipitacion, na.rm = TRUE))
-datos_grafico
+datatable(datos_grafico)
 ```
 
 ### Grafico de precipitaciones
@@ -218,19 +220,10 @@ ggplot(datos_grafico, aes(x = provincia, y = precip_total, color = altitu_media)
 
 ### 4.5 Filtración de datos
 ```{r Filtracion}
-defuncion_resp_total
-zonas_verdes1
-summary(defuncion_resp_total)
-summary(zonas_verdes1)
-defuncion_resp_total$Provincia <- as.factor(defuncion_resp_total$Provincia)
-zonas_verdes1$Provincia <- as.factor(zonas_verdes1$Provincia)
-levels(defuncion_resp_total$Provincia)
-levels(zonas_verdes1$Provincia)
 combinados<- inner_join(defuncion_resp_total, zonas_verdes1, by = "Provincia")
-
-
-knitr::kable(combinados)# paquete DT CAMBIAR https://rstudio.github.io/DT/
+datatable(combinados)
 ```
+
 
 ### 4.6 Visualizacion % zonas verdes y Defunciones por cada provincia
 ```{r Grafico}
@@ -246,6 +239,6 @@ datos_combinados <- left_join(datos_hospitales, zonas_verdes, by = "Provincia")
 # Por ejemplo, filtra hospitales con más de 5 m² de zonas verdes por habitante
 hospitales_con_zonas_verdes <- datos_combinados %>%
   filter(`Parques m²/hab` > 5)
-print(hospitales_con_zonas_verdes)
+datatable(hospitales_con_zonas_verdes)
 ```
 
