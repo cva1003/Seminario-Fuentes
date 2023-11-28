@@ -4,7 +4,7 @@ author: "Claudia Valentín, Nisrine Fariss, Jacinto Javier Perez"
 date: "`r Sys.Date()`"
 output: 
   html_document:
-    fig_width: 16 
+    fig_width: 20 
     fig_height: 6
 ---
 
@@ -43,16 +43,19 @@ library(readxl)
 library(dplyr)
 library(tidyverse)
 library(ggplot2)
+library(climaemet)
+library(lubridate)
+
 ```
 ### 4.1Datos de defunciones por enfermedades respiratorias
 ```{r defunciones, echo=TRUE}
-library(readxl)
 defuncion <-read_excel("defunciones.xlsx")
-defuncion
 defuncion_resp<-defuncion %>%
   slice(1337:1500)%>%
   select(1,3)%>%
   rename(Provincia = 1, defunciones= 2)
+datable(defuncion_resp)
+
 ```
 #### 4.1.1 Datos de defunciones por enfermedades respiratorias total por Provincia
 ```{r defunciones total, echo=TRUE}
@@ -86,7 +89,6 @@ knitr::kable(defuncion_resp_hombres)
 ```{r}
 # combinar
 defuncion_resp_combinada <- merge(defuncion_resp_hombres, defuncion_resp_mujeres, by = "Provincia")
-defuncion_resp_combinada$Provincia <- substr(defuncion_resp_combinada$Provincia, 1,3)
 ggplot(defuncion_resp_combinada, aes(x = Provincia)) +
   geom_bar(aes(y = defunciones_hombres, fill = "Hombres"), position = "dodge", stat = "identity") +
   geom_bar(aes(y = defunciones_mujeres, fill = "Mujeres"), position = "dodge", stat = "identity") +
@@ -94,17 +96,13 @@ ggplot(defuncion_resp_combinada, aes(x = Provincia)) +
        x = "Provincia",
        y = "Defunciones",
        fill = "Género") +
-
-
-
-  scale_fill_manual(values = c("Hombres" = "white", "Mujeres" = "purple"))
+  scale_fill_manual(values = c("Hombres" = "white", "Mujeres" = "purple"))+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))  
 
 ```
 
 ### 4.2 Importación de datos de la cantidad de zonas verdes
 ```{r}
-library(readxl)
-library(dplyr)
 zonas_verdes <- read_excel("zonas_verdes.xlsx")
 zonas_verdes
 
@@ -112,7 +110,6 @@ zonas_verdes
 
 ### Grafico zonas verdes
 ```{r}
-zonas_verdes
 ggplot(zonas_verdes, aes(x = Provincia, y = `Parques m²/hab`)) +
   geom_bar(stat = "identity", fill = "darkgreen", alpha = 0.7) +
   labs(title = "Zonas verdes", x = "Provincia", y = "m^2/habitante") +
@@ -148,11 +145,7 @@ ggplot(conteo_por_provincia, aes(x = Provincia, y = Numero_Hospitales)) +
 
 ### 4.4 Lluvias por provincia
 ```{r Lluvias por provincia}
-library(climaemet)
-library(dplyr)
-library(lubridate)
-
-aemet_api_key("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjbGF1ZGlhdmFsZ3VAZ21haWwuY29tIiwianRpIjoiMTU3MmFlYmMtNDU0My00ZjJiLTgyYjgtY2M0NTI2NWY2YTNmIiwiaXNzIjoiQUVNRVQiLCJpYXQiOjE2OTkyNjIzMDUsInVzZXJJZCI6IjE1NzJhZWJjLTQ1NDMtNGYyYi04MmI4LWNjNDUyNjVmNmEzZiIsInJvbGUiOiIifQ.X2uwTqNh9qDeaoVJSlEgO4oCN_YpqRAVRlgxsV0BUtU",install=TRUE, overwrite = TRUE)
+#aemet_api_key("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjbGF1ZGlhdmFsZ3VAZ21haWwuY29tIiwianRpIjoiMTU3MmFlYmMtNDU0My00ZjJiLTgyYjgtY2M0NTI2NWY2YTNmIiwiaXNzIjoiQUVNRVQiLCJpYXQiOjE2OTkyNjIzMDUsInVzZXJJZCI6IjE1NzJhZWJjLTQ1NDMtNGYyYi04MmI4LWNjNDUyNjVmNmEzZiIsInJvbGUiOiIifQ.X2uwTqNh9qDeaoVJSlEgO4oCN_YpqRAVRlgxsV0BUtU",install=TRUE, overwrite = TRUE)
 estaciones<- aemet_stations()
 colnames(estaciones)
 levels(estaciones$provincia)
@@ -168,7 +161,7 @@ vector_resultado
 
 ```
 
-```{r Lluvias por provincia}
+```{r Lluvias por provincias}
 #datos climatogicos por cada estacion en cada provincia
 data_monthlysi <- aemet_monthly_clim(station=estaciones$indicativo, year = 2022)
 data_monthlysi
@@ -178,7 +171,6 @@ str(data_monthlysi)
 
 ```
 ```{r}
-library(dplyr)
 data_monthlysi
 str(data_monthlysi)
 #promedio de lluvias por cada estacion
@@ -190,7 +182,6 @@ data_monthlyprom#son litros/m^2
 
 ### Asociacion a cada provincias
 ```{r}
-library(dplyr)
 resultado <- dplyr::left_join(data_monthlyprom, estaciones, by = "indicativo") %>%
   dplyr::select(indicativo, provincia, everything())
 resultado
@@ -215,8 +206,6 @@ datos_grafico
 
 ### Grafico de precipitaciones
 ```{r}
-library(ggplot2)
-
 ggplot(datos_grafico, aes(x = provincia, y = precip_total, color = altitu_media)) +
   geom_point(size = 3) +
   scale_color_gradient(low = "blue", high = "red") +
@@ -229,9 +218,6 @@ ggplot(datos_grafico, aes(x = provincia, y = precip_total, color = altitu_media)
 
 ### 4.5 Filtración de datos
 ```{r Filtracion}
-library(dplyr)
-
-# Cargar los datos desde los archivos Excel
 defuncion_resp_total
 zonas_verdes1
 summary(defuncion_resp_total)
@@ -248,37 +234,15 @@ knitr::kable(combinados)# paquete DT CAMBIAR https://rstudio.github.io/DT/
 
 ### 4.6 Visualizacion % zonas verdes y Defunciones por cada provincia
 ```{r Grafico}
-library(ggplot2)
 ggplot(data = combinados, aes(x = `Parques m²/hab`, y =defunciones))+
   geom_point(aes(colour = Provincia))+
   geom_smooth(colour = "black")+#linea de tendencia
   labs(x = "Porcentaje zonas verdes", y = "Numero de defunciones")
 ```
-
-
-
-```{r Filtracion}
-
-library(ggplot2)
-ggplot(data = combinados, aes(x = `Parques m²/hab`, y =defunciones))+
-  geom_point(aes(colour = Provincia))+
-  geom_smooth(colour = "black")+#linea de tendencia
-  labs(x = "Porcentaje zonas verdes", y = "Numero de defunciones")
-```
-# Rename de una columna
-```{r}
-datos_zonas_verdes <- read_excel("zonas_verdes.xlsx")
-datos_zonas_verdes <- datos_zonas_verdes %>%
-  rename(Provincia = Ciudad)
-```
-
 
 ### 4.7 Filtración hospitales con la cantidad de zonas verdes
-```{r}
-
-datos_hospitales <- read_excel("CNH_2021.xlsx") 
-datos_zonas_verdes <- read_excel("zonas_verdes.xlsx")
-datos_combinados <- left_join(datos_hospitales, datos_zonas_verdes, by = "Provincia")
+```{r Combinación cantidad de hospitales y zonas}
+datos_combinados <- left_join(datos_hospitales, zonas_verdes, by = "Provincia")
 # Por ejemplo, filtra hospitales con más de 5 m² de zonas verdes por habitante
 hospitales_con_zonas_verdes <- datos_combinados %>%
   filter(`Parques m²/hab` > 5)
