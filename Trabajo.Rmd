@@ -4,7 +4,7 @@ author: "Claudia Valentín, Nisrine Fariss, Jacinto Javier Perez"
 date: "`r Sys.Date()`"
 output: 
   html_document:
-    fig_width: 20 
+    fig_width: 16 
     fig_height: 6
 ---
 
@@ -64,7 +64,6 @@ datatable(defuncion_resp)
 defuncion_resp_total<-defuncion_resp %>%
   slice(2:53)%>%
   select(1,2)
-defuncion_resp_total
 datatable(defuncion_resp_total)
 
 ```
@@ -78,12 +77,10 @@ datatable(defuncion_resp_mujeres)
 ```
 #### 4.1.3 Datos de defunciones por enfermedades respiratorias hombres por Provincia
 ```{r defunciones hombres, echo=TRUE}
-
 defuncion_resp_hombres<-defuncion_resp %>%
   slice(57:108)%>%
   select(1,2)%>%
   rename(defunciones_hombres= 2)
-
 datatable(defuncion_resp_hombres)
 ```
 
@@ -106,7 +103,7 @@ ggplot(defuncion_resp_combinada, aes(x = Provincia)) +
 ### 4.2 Importación de datos de la cantidad de zonas verdes
 ```{r}
 zonas_verdes <- read_excel("zonas_verdes.xlsx")
-zonas_verdes
+datatable(zonas_verdes)
 
 ```
 
@@ -149,12 +146,8 @@ ggplot(conteo_por_provincia, aes(x = Provincia, y = Numero_Hospitales)) +
 ```{r Lluvias por provincia}
 aemet_api_key("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjbGF1ZGlhdmFsZ3VAZ21haWwuY29tIiwianRpIjoiMTU3MmFlYmMtNDU0My00ZjJiLTgyYjgtY2M0NTI2NWY2YTNmIiwiaXNzIjoiQUVNRVQiLCJpYXQiOjE2OTkyNjIzMDUsInVzZXJJZCI6IjE1NzJhZWJjLTQ1NDMtNGYyYi04MmI4LWNjNDUyNjVmNmEzZiIsInJvbGUiOiIifQ.X2uwTqNh9qDeaoVJSlEgO4oCN_YpqRAVRlgxsV0BUtU",install=TRUE, overwrite = TRUE)
 estaciones<- aemet_stations()
-colnames(estaciones)
-levels(estaciones$provincia)
 valores_unicos <- unique(estaciones$provincia)
-valores_unicos
-summary(estaciones)
-estaciones
+datatable(estaciones)
 ```
 
 ```{r}
@@ -166,9 +159,6 @@ vector_resultado
 ```{r Lluvias por provincias}
 #datos climatogicos por cada estacion en cada provincia
 data_monthlysi <- aemet_monthly_clim(station=estaciones$indicativo, year = 2020)
-summary(data_monthlysi)
-colnames(data_monthlysi)
-str(data_monthlysi)
 datatable(data_monthlysi)
 
 ```
@@ -220,7 +210,7 @@ ggplot(datos_grafico, aes(x = provincia, y = precip_total, color = altitu_media)
 
 ### 4.5 Filtración de datos
 ```{r Filtracion}
-combinados<- inner_join(defuncion_resp_total, zonas_verdes1, by = "Provincia")
+combinados<- inner_join(defuncion_resp_total, zonas_verdes, by = "Provincia")
 datatable(combinados)
 ```
 
@@ -234,11 +224,11 @@ ggplot(data = combinados, aes(x = `Parques m²/hab`, y =defunciones))+
 ```
 
 ### 4.7 Filtración hospitales con la cantidad de zonas verdes
-```{r Combinación cantidad de hospitales y zonas}
-datos_combinados <- left_join(datos_hospitales, zonas_verdes, by = "Provincia")
+#```{r Combinación cantidad de hospitales y zonas}
+#datos_combinados <- left_join(datos_hospitales, zonas_verdes, by = "Provincia")
 # Por ejemplo, filtra hospitales con más de 5 m² de zonas verdes por habitante
-hospitales_con_zonas_verdes <- datos_combinados %>%
-  filter(`Parques m²/hab` > 5)
-datatable(hospitales_con_zonas_verdes)
+#hospitales_con_zonas_verdes <- datos_combinados %>%
+#  filter(`Parques m²/hab` > 5)
+#datatable(hospitales_con_zonas_verdes)
 ```
 
