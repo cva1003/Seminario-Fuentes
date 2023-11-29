@@ -103,13 +103,14 @@ ggplot(defuncion_resp_combinada, aes(x = Provincia)) +
 ### 4.2 Importación de datos de la cantidad de zonas verdes
 ```{r}
 zonas_verdes <- read_excel("zonas_verdes.xlsx")
+zonas_verdes
 datatable(zonas_verdes)
 
 ```
 
 ### Grafico zonas verdes
 ```{r}
-ggplot(zonas_verdes, aes(x = Provincia, y = `Parques m²/hab`)) +
+ggplot(zonas_verdes, aes(x =reorder(Provincia,-`Parques m²/hab` ), y = `Parques m²/hab`)) +
   geom_bar(stat = "identity", fill = "darkgreen", alpha = 0.7) +
   labs(title = "Zonas verdes", x = "Provincia", y = "m^2/habitante") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))  
@@ -159,7 +160,7 @@ vector_resultado
 ```{r Lluvias por provincia, warning=FALSE, message=FALSE}
 #datos climatogicos por cada estacion en cada provincia
 data_monthlysi <- aemet_monthly_clim(station=estaciones$indicativo, year = 2020)
-datatable(data_monthlysi)
+ datatable(data_monthlysi)
 
 ```
 ```{r}
@@ -198,7 +199,7 @@ datatable(datos_grafico)
 
 ### Grafico de precipitaciones
 ```{r}
-ggplot(datos_grafico, aes(x = provincia, y = precip_total, color = altitu_media)) +
+ggplot(datos_grafico, aes(x = reorder(provincia,-precip_total), y = precip_total, color = altitu_media)) +
   geom_point(size = 3) +
   scale_color_gradient(low = "blue", high = "red") +
   labs(title = "Precipitación y altitud por provincia",
