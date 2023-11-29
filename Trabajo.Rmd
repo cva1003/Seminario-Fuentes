@@ -156,7 +156,7 @@ vector_resultado
 
 ```
 
-```{r Lluvias por provincias}
+```{r Lluvias por provincia, warning=FALSE, message=FALSE}
 #datos climatogicos por cada estacion en cada provincia
 data_monthlysi <- aemet_monthly_clim(station=estaciones$indicativo, year = 2020)
 datatable(data_monthlysi)
