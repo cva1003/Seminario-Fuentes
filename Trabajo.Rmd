@@ -215,7 +215,7 @@ resultado <- left_join(data_monthlyprom, estaciones, by = "indicativo") %>%
 ```
 
 ### Agrupacion por provincia
-```{rAgrupacion por provincia}
+```{r Agrupacion por provincia}
 # Seleccionar un rango de columnas
 datos_interes <- resultado %>% group_by(provincia)%>%
   select(indicativo, provincia, altitud, promedio_precipitacion )
