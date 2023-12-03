@@ -46,7 +46,8 @@ library(ggplot2)
 library(climaemet)
 library(lubridate)
 library(htmltools)
-#library(DT)
+library(DT)
+library(mapSpain)
 
 ```
 ### 4.1Datos de defunciones por enfermedades respiratorias
@@ -56,7 +57,7 @@ defuncion_resp<-defuncion %>%
   slice(1337:1500)%>%
   select(1,3)%>%
   rename(Provincia = 1, defunciones= 2)
-#datatable(defuncion_resp)
+datatable(defuncion_resp)
 
 ```
 #### 4.1.1 Datos de defunciones por enfermedades respiratorias total por Provincia
@@ -118,7 +119,39 @@ ggplot(zonas_verdes, aes(x =reorder(Provincia,-`Parques m²/hab` ), y = `Parques
 
 ```
 
+```{r intento mapa}
+library(sf)
+Provs <- esp_get_prov()%>%
+  rename("Provincia"=ine.prov.name)
+provincias<-st_as_sf(inner_join(y=Provs, x= zonas_verdes, by="Provincia"))
+parques<- zonas_verdes$`Parques m²/hab`
+Can <- esp_get_can_box()
 
+ggplot(provincias) +
+  geom_sf(aes(fill = parques),
+    color = "grey70",
+    linewidth = .3
+  ) +
+  geom_sf(data = Can, color = "grey70") +
+  geom_sf_label(aes(label = parques),
+    fill = "white", alpha = 0.5,
+    size = 3,
+    label.size = 0
+  ) +
+  scale_fill_gradientn(
+    colors = hcl.colors(15, "Greens", rev = TRUE),
+    n.breaks = 10,
+    labels = function(x) {
+      sprintf("%1.1f%%", 1 * x)
+    },
+    guide = guide_legend(title = "parques")
+  ) +
+  theme_void() +
+  theme(legend.position = c(0.1, 0.6))
+
+
+
+```
 ### 4.3 Número de hospitales por provincia.
 
 ```{r conteo por provincia}
@@ -145,10 +178,10 @@ ggplot(conteo_por_provincia, aes(x = Provincia, y = Numero_Hospitales)) +
 
 ### 4.4 Lluvias por provincia
 ```{r Lluvias por provincia}
-aemet_api_key("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjbGF1ZGlhdmFsZ3VAZ21haWwuY29tIiwianRpIjoiMTU3MmFlYmMtNDU0My00ZjJiLTgyYjgtY2M0NTI2NWY2YTNmIiwiaXNzIjoiQUVNRVQiLCJpYXQiOjE2OTkyNjIzMDUsInVzZXJJZCI6IjE1NzJhZWJjLTQ1NDMtNGYyYi04MmI4LWNjNDUyNjVmNmEzZiIsInJvbGUiOiIifQ.X2uwTqNh9qDeaoVJSlEgO4oCN_YpqRAVRlgxsV0BUtU",install=TRUE, overwrite = TRUE)
+#aemet_api_key("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjbGF1ZGlhdmFsZ3VAZ21haWwuY29tIiwianRpIjoiMTU3MmFlYmMtNDU0My00ZjJiLTgyYjgtY2M0NTI2NWY2YTNmIiwiaXNzIjoiQUVNRVQiLCJpYXQiOjE2OTkyNjIzMDUsInVzZXJJZCI6IjE1NzJhZWJjLTQ1NDMtNGYyYi04MmI4LWNjNDUyNjVmNmEzZiIsInJvbGUiOiIifQ.X2uwTqNh9qDeaoVJSlEgO4oCN_YpqRAVRlgxsV0BUtU",install=TRUE, overwrite = TRUE)
 estaciones<- aemet_stations()
 valores_unicos <- unique(estaciones$provincia)
-#datatable(estaciones)
+datatable(estaciones)
 ```
 
 ```{r}
@@ -157,13 +190,14 @@ vector_resultado
 
 ```
 
-```{r Lluvias por provincia, warning=FALSE, message=FALSE}
+```{r Lluvia por provincia, warning=FALSE, message=FALSE}
 #datos climatogicos por cada estacion en cada provincia
 data_monthlysi <- aemet_monthly_clim(station=estaciones$indicativo, year = 2020)
  #datatable(data_monthlysi)
 
 ```
-```{r}
+
+```{r promedio provincias}
 data_monthlysi
 str(data_monthlysi)
 #promedio de lluvias por cada estacion
@@ -174,14 +208,14 @@ data_monthlyprom#son litros/m^2
 ```
 
 ### Asociacion a cada provincias
-```{r}
+```{r Asociacion a cada provincias}
 resultado <- left_join(data_monthlyprom, estaciones, by = "indicativo") %>%
   select(indicativo, provincia, everything())
 #datatable(resultado)
 ```
 
 ### Agrupacion por provincia
-```{r}
+```{rAgrupacion por provincia}
 # Seleccionar un rango de columnas
 datos_interes <- resultado %>% group_by(provincia)%>%
   select(indicativo, provincia, altitud, promedio_precipitacion )
@@ -189,7 +223,7 @@ datos_interes
 ```
 
 
-```{r}
+```{r obtencion datos para el grafico}
 #obtencion datos para el grafico
 datos_grafico<- datos_interes%>% group_by(provincia)%>%
 summarize(altitu_media = mean(altitud, na.rm = TRUE),
@@ -198,7 +232,7 @@ summarize(altitu_media = mean(altitud, na.rm = TRUE),
 ```
 
 ### Grafico de precipitaciones
-```{r}
+```{r Grafico de precipitaciones}
 ggplot(datos_grafico, aes(x = reorder(provincia,-precip_total), y = precip_total, color = altitu_media)) +
   geom_point(size = 3) +
   scale_color_gradient(low = "blue", high = "red") +
@@ -243,7 +277,7 @@ datos_filtrados <- datos_combinados %>%
 ```
 
 ###4.8 Gráfico de dispersión de nº de hospitales por la cantidad de zonas verdes
-```{r}
+```{r Gráfico de dispersión de nº de hospitales por la cantidad de zonas verdes}
 # Gráfico de dispersión
 ggplot(datos_filtrados, aes(x = `Parques m²/hab`, y = Numero_Hospitales)) +
   geom_point(color = "red") +
@@ -254,7 +288,7 @@ ggplot(datos_filtrados, aes(x = `Parques m²/hab`, y = Numero_Hospitales)) +
 
 ```
 ### 4.9 Gráfico de barras apiladas de nº de hospitales con cantidad de zonas verdes.
-```{r}
+```{r Gráfico de barras apiladas de nº de hospitales con cantidad de zonas verdes.}
 ggplot(datos_filtrados, aes(x = Provincia)) +
   geom_bar(aes(y = `Parques m²/hab`, fill = "Zonas Verdes"), stat = "identity") +
   geom_bar(aes(y = Numero_Hospitales, fill = "Hospitales"), stat = "identity") +
@@ -266,7 +300,7 @@ ggplot(datos_filtrados, aes(x = Provincia)) +
 ```
 ### 4.9 Gráfico de violín que relaciona nº de hospitales con cantidad de zonas verdes.
 
-```{r}
+```{r Gráfico de violín que relaciona nº de hospitales con cantidad de zonas verdes.}
 #Muestra la densidad de las observaciones en diferentes niveles de las variables.
 ggplot(datos_filtrados, aes(x = factor(1), y = `Parques m²/hab`)) +
   geom_violin(fill = "green", alpha = 0.7) +
