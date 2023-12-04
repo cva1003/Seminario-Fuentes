@@ -47,8 +47,6 @@ library(ggplot2)
 library(climaemet)
 library(lubridate)
 library(htmltools)
-
-
 library(DT)
 library(mapSpain)
 
@@ -156,11 +154,12 @@ datatable(conteo_por_provincia)
 
 #### 4.3.1 Gráfico de barras del número de hospitales por provincia
 
-```{r grafico}
+```{r}
 conteo_por_provincia$Provincia <- substr(conteo_por_provincia$Provincia, 1,3)
 
 ggplot(conteo_por_provincia, aes(x = Provincia, y = Numero_Hospitales)) +
-  geom_bar(stat = "identity", fill = "green") +
+  geom_segment(aes(x=Provincia, xend=Provincia, y=0, yend=Numero_Hospitales)) +
+  geom_point( size=5, color="red", fill=alpha("orange", 0.3), alpha=0.7, shape=21, stroke=2) +
   labs(title = "Número de Hospitales por Provincia",
        x = "Provincia",
        y = "Número de Hospitales") +
@@ -234,7 +233,7 @@ datatable(combinados)
 
 
 ### 4.6 Visualizacion % zonas verdes y Defunciones por cada provincia
-```{r Grafico}
+```{r}
 ggplot(data = combinados, aes(x = `Parques m²/hab`, y =defunciones))+
   geom_point(aes(colour = Provincia))+
   geom_smooth(colour = "black")+#linea de tendencia
