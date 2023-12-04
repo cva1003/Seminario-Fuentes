@@ -47,6 +47,8 @@ library(ggplot2)
 library(climaemet)
 library(lubridate)
 library(htmltools)
+
+
 library(DT)
 library(mapSpain)
 
