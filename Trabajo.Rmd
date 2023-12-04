@@ -39,6 +39,7 @@ En primer lugar, vamos a realizar una exposición principal de todos los datos r
 
 **Importación de librerias**
 ```{r librerias, echo=TRUE, warning=FALSE, message=FALSE}
+
 library(readxl)
 library(dplyr)
 library(tidyverse)
@@ -65,7 +66,7 @@ datatable(defuncion_resp)
 defuncion_resp_total<-defuncion_resp %>%
   slice(2:53)%>%
   select(1,2)
-#datatable(defuncion_resp_total)
+datatable(defuncion_resp_total)
 
 ```
 #### 4.1.2 Datos de defunciones por enfermedades respiratorias mujeres por Provincia
@@ -74,7 +75,7 @@ defuncion_resp_mujeres<-defuncion_resp %>%
   slice(112:163)%>%
   select(1,2)%>%
   rename(defunciones_mujeres= 2)
-#datatable(defuncion_resp_mujeres)
+datatable(defuncion_resp_mujeres)
 ```
 #### 4.1.3 Datos de defunciones por enfermedades respiratorias hombres por Provincia
 ```{r defunciones hombres, echo=TRUE}
@@ -82,12 +83,11 @@ defuncion_resp_hombres<-defuncion_resp %>%
   slice(57:108)%>%
   select(1,2)%>%
   rename(defunciones_hombres= 2)
-#datatable(defuncion_resp_hombres)
+datatable(defuncion_resp_hombres)
 ```
 
 #### 4.1.4 Histograma de defunciones por enfermedades respiratorias de hombres y mujeres por Provincia
-```{r}
-# combinar
+```{r combinar}
 defuncion_resp_combinada <- merge(defuncion_resp_hombres, defuncion_resp_mujeres, by = "Provincia")
 ggplot(defuncion_resp_combinada, aes(x = Provincia)) +
   geom_bar(aes(y = defunciones_hombres, fill = "Hombres"), position = "dodge", stat = "identity") +
@@ -104,22 +104,13 @@ ggplot(defuncion_resp_combinada, aes(x = Provincia)) +
 ### 4.2 Importación de datos de la cantidad de zonas verdes
 ```{r}
 zonas_verdes <- read_excel("zonas_verdes.xlsx")
-zonas_verdes
-#datatable(zonas_verdes)
+datatable(zonas_verdes)
 
 ```
 
-### Grafico zonas verdes
-```{r}
-ggplot(zonas_verdes, aes(x =reorder(Provincia,-`Parques m²/hab` ), y = `Parques m²/hab`)) +
-  geom_bar(stat = "identity", fill = "darkgreen", alpha = 0.7) +
-  labs(title = "Zonas verdes", x = "Provincia", y = "m^2/habitante") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))  
 
-
-```
-
-```{r intento mapa}
+### Porcentaje zonas verdes por provincia
+```{r Mapa}
 library(sf)
 Provs <- esp_get_prov()%>%
   rename("Provincia"=ine.prov.name)
@@ -153,13 +144,12 @@ ggplot(provincias) +
 
 ```
 ### 4.3 Número de hospitales por provincia.
-
 ```{r conteo por provincia}
 datos <-read_excel("CNH_2021.xlsx")
 conteo_por_provincia <- datos %>%
   group_by(Provincia) %>%
   summarize(Numero_Hospitales = n_distinct(`Nombre Centro`))
-#datatable(conteo_por_provincia)
+datatable(conteo_por_provincia)
 ```
 
 #### 4.3.1 Gráfico de barras del número de hospitales por provincia
@@ -184,34 +174,26 @@ valores_unicos <- unique(estaciones$provincia)
 datatable(estaciones)
 ```
 
-```{r}
-vector_resultado <- estaciones$indicativo
-vector_resultado
-
-```
-
 ```{r Lluvia por provincia, warning=FALSE, message=FALSE}
 #datos climatogicos por cada estacion en cada provincia
 data_monthlysi <- aemet_monthly_clim(station=estaciones$indicativo, year = 2020)
- #datatable(data_monthlysi)
+datatable(data_monthlysi)
 
 ```
 
 ```{r promedio provincias}
-data_monthlysi
-str(data_monthlysi)
 #promedio de lluvias por cada estacion
 data_monthlyprom <- data_monthlysi %>%
   group_by(indicativo) %>%
   summarize(promedio_precipitacion = mean(p_mes, na.rm = TRUE))
-data_monthlyprom#son litros/m^2
+datatable(data_monthlyprom)#son litros/m^2
 ```
 
 ### Asociacion a cada provincias
 ```{r Asociacion a cada provincias}
 resultado <- left_join(data_monthlyprom, estaciones, by = "indicativo") %>%
   select(indicativo, provincia, everything())
-#datatable(resultado)
+datatable(resultado)
 ```
 
 ### Agrupacion por provincia
@@ -219,7 +201,6 @@ resultado <- left_join(data_monthlyprom, estaciones, by = "indicativo") %>%
 # Seleccionar un rango de columnas
 datos_interes <- resultado %>% group_by(provincia)%>%
   select(indicativo, provincia, altitud, promedio_precipitacion )
-datos_interes
 ```
 
 
@@ -228,7 +209,7 @@ datos_interes
 datos_grafico<- datos_interes%>% group_by(provincia)%>%
 summarize(altitu_media = mean(altitud, na.rm = TRUE),
     precip_total = sum(promedio_precipitacion, na.rm = TRUE))
-#datatable(datos_grafico)
+datatable(datos_grafico)
 ```
 
 ### Grafico de precipitaciones
@@ -246,7 +227,7 @@ ggplot(datos_grafico, aes(x = reorder(provincia,-precip_total), y = precip_total
 ### 4.5 Filtración de datos
 ```{r Filtracion}
 combinados<- inner_join(defuncion_resp_total, zonas_verdes, by = "Provincia")
-#datatable(combinados)
+datatable(combinados)
 ```
 
 
@@ -272,14 +253,14 @@ datos_filtrados <- datos_combinados %>%
   filter(`Parques m²/hab` > 5)
 
 # Mostramos el resultado
-#datatable(datos_filtrados)
+datatable(datos_filtrados)
 
 ```
 
 ###4.8 Gráfico de dispersión de nº de hospitales por la cantidad de zonas verdes
 ```{r Gráfico de dispersión de nº de hospitales por la cantidad de zonas verdes}
 # Gráfico de dispersión
-ggplot(datos_filtrados, aes(x = `Parques m²/hab`, y = Numero_Hospitales)) +
+ggplot(datos_filtrados, aes(x =reorder(`Parques m²/hab`, - Numero_Hospitales), y = Numero_Hospitales)) +
   geom_point(color = "red") +
   labs(title = "Relación entre Zonas Verdes y Número de Hospitales por Provincia",
        x = "Zonas Verdes (m^2/habitante)",
