@@ -88,8 +88,8 @@ datatable(defuncion_resp_hombres)
 
 #### 4.1.4 Histograma de defunciones por enfermedades respiratorias de hombres y mujeres por Provincia
 ```{r combinar}
-defuncion_resp_combinada <- merge(defuncion_resp_hombres, defuncion_resp_mujeres, by = "Provincia")
-ggplot(defuncion_resp_combinada, aes(x = Provincia)) +
+defuncion_resp_combinada <- inner_join(defuncion_resp_hombres, defuncion_resp_mujeres, by = "Provincia")
+ggplot(defuncion_resp_combinada, aes(x =reorder( Provincia, - defunciones_hombres))) +
   geom_bar(aes(y = defunciones_hombres, fill = "Hombres"), position = "dodge", stat = "identity") +
   geom_bar(aes(y = defunciones_mujeres, fill = "Mujeres"), position = "dodge", stat = "identity") +
   labs(title = "Defunciones por enfermedades respiratorias por provincia",
