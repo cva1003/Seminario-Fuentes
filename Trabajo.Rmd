@@ -1,6 +1,6 @@
 ---
 title: "¿Existe una relación entre las defunciones por enfermedad respiratoria, el tiempo meteorológico y la cantidad de zonas verdes?"
-author: "Claudia Valentín, Nisrine Fariss, Jacinto Javier Perez"
+author: "Claudia Valentín, Nisrine Fariss, Jacinto Javier Pérez"
 date: "`r Sys.Date()`"
 output: 
   html_document:
