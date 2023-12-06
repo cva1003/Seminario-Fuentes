@@ -110,24 +110,28 @@ datatable(zonas_verdes)
 
 
 ### Porcentaje zonas verdes por provincia
+
 ```{r Mapa}
+#nrow(provincias)  # Debería ser igual a la longitud de la columna 'parques'
+#length(provincias$`Parques m²/hab`)  # También debería ser igual
+#any(is.na(provincias$`Parques m²/hab`))
+#provincias$`Parques m²/hab`<- as.numeric(provincias$`Parques m²/hab`)
+
 library(sf)
 Provs <- esp_get_prov()%>%
   rename("Provincia"=ine.prov.name)
 provincias<-st_as_sf(inner_join(y=Provs, x= zonas_verdes, by="Provincia"))
-parques<- zonas_verdes$`Parques m²/hab`
 Can <- esp_get_can_box()
-
 ggplot(provincias) +
-  geom_sf(aes(fill = parques),
+  geom_sf(aes(fill =`Parques m²/hab`),
     color = "grey70",
     linewidth = .3
   ) +
   geom_sf(data = Can, color = "grey70") +
-  geom_sf_label(aes(label = parques),
+  geom_sf_label(aes(label = `Parques m²/hab`),
     fill = "white", alpha = 0.5,
     size = 3,
-    label.size = 0
+label.size = 0
   ) +
   scale_fill_gradientn(
     colors = hcl.colors(15, "Greens", rev = TRUE),
@@ -140,9 +144,10 @@ ggplot(provincias) +
   theme_void() +
   theme(legend.position = c(0.1, 0.6))
 
-
-
 ```
+
+
+
 ### 4.3 Número de hospitales por provincia.
 ```{r conteo por provincia}
 datos <-read_excel("CNH_2021.xlsx")
@@ -239,6 +244,7 @@ ggplot(data = combinados, aes(x = `Parques m²/hab`, y =defunciones))+
   geom_smooth(colour = "black")+#linea de tendencia
   labs(x = "Porcentaje zonas verdes", y = "Numero de defunciones")
 ```
+Visualizando el grafico anterior
 
 ### 4.7 Filtración hospitales con la cantidad de zonas verdes
 ```{r Combinación cantidad de hospitales y zonas}
