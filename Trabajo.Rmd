@@ -50,6 +50,7 @@ library(htmltools)
 library(DT)
 library(mapSpain)
 library(sf)
+library(gridExtra)
 ```
 ### 4.1Datos de defunciones por enfermedades respiratorias
 ```{r defunciones, echo=TRUE}
@@ -274,19 +275,29 @@ Por ejemplo, las provincias con alta densidad de población y alto nivel de urba
 Por otro lado, las provincias con menor densidad de población y menor nivel de urbanización, como algunas provincias rurales, pueden tener menos hospitales pero más zonas verdes debido a la abundancia de espacio natural, como lo son Soria o Burgos.
 
 ### 4.7 Grafica de relación de cantidad de muertes con la cantidad de hospitales 
-```{r}
+```{r warning=FALSE, message=FALSE}
 union_muertes_gen_hosp<- inner_join(defuncion_resp_total, datos_combinados, by= "Provincia")
 union_muertes_homb_hosp<-inner_join(defuncion_resp_hombres, datos_combinados,by= "Provincia")
 union_muertes_mujer_hosp<-inner_join(defuncion_resp_mujeres,datos_combinados,by= "Provincia")
 union_total<- inner_join(inner_join(union_muertes_gen_hosp, union_muertes_homb_hosp,by= c("Provincia" , "Población","Parques m²/hab","Numero_Hospitales") ), union_muertes_mujer_hosp,by= c("Provincia" , "Población","Parques m²/hab","Numero_Hospitales")) 
 
-ggplot(data = union_total, aes(x = Provincia )) +
+g1<- ggplot(data = union_total, aes(x = Provincia )) +
   geom_line(aes(y = defunciones, group = 1, color="Defunciones totales")) +
-  geom_line(aes(y = defunciones_mujeres, group = 1,color="Defunciones mujeres")) +
-  geom_line(aes(y = defunciones_hombres, group = 1,color="Defunciones hombres")) +
-  geom_line(aes(y = Numero_Hospitales, group = 1,color="numero hospitales")) +
-  labs(title = "Relación entre defunciones y Número de Hospitales",
+  geom_line(aes(y = defunciones_mujeres, group = 2,color="Defunciones mujeres")) +
+  geom_line(aes(y = defunciones_hombres, group = 4,color="Defunciones hombres")) +
+  labs(title = "defunciones por provincia ",
        x = "Provincias",
-       y = "Cantidad")
+       y = "Cantidad")+
+  scale_color_manual(values = c("Defunciones totales" = "lightblue", "Defunciones mujeres" = "lightpink","Defunciones hombres" = "lightgreen"))+
+  theme(axis.text.x = element_text(angle = 57, hjust = 1, size = 7)) 
+
+g2<- ggplot(data = datos_combinados, aes(x = Provincia )) +
+  geom_line(aes(y = Numero_Hospitales, group = 1,color="Hospitales")) +
+   scale_color_manual(values = c("Hospitales" = "purple"))+
+  theme(axis.text.x = element_text(angle = 57, hjust = 1, size = 7)) 
+
+size <- unit(50, "mm")
+
+grid.arrange(g1, g2, nrow = 2)
 ```
 
