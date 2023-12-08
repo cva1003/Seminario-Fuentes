@@ -296,8 +296,28 @@ g2<- ggplot(data = datos_combinados, aes(x = Provincia )) +
    scale_color_manual(values = c("Hospitales" = "purple"))+
   theme(axis.text.x = element_text(angle = 57, hjust = 1, size = 7)) 
 
-size <- unit(50, "mm")
-
 grid.arrange(g1, g2, nrow = 2)
 ```
+Se puede observar como la cantidad de muertes y la cantidad de hospitales por provincias muestra una correlación aparente, en aquellas provincias con picos más altos en fallecidos existe a su vez picos altos en el número de hospitales y en aquellos con un número bajo de muertes existen también menor cantidad de hospitales.
+Debido a esto se puede afirmar que la cantidad de hospitales no interviene en el número de fallecidos, no por haber más cantidad de hospitales existen menos fallecidos.
+
+### 4.8 Grafica de relación de cantidad de muertes con las precipitaciones
+```{r}
+
+g3<- ggplot(data = datos_grafico, aes(x = provincia )) +
+  geom_line(aes(y = precip_total, group = 1,color="")) +
+   scale_color_manual(values = c("Precipitaciones" = "blue"))+
+  theme(axis.text.x = element_text(angle = 57, hjust = 1, size = 7)) 
+grid.arrange(g1, g3, nrow = 2)
+```
+Se puede observar como la cantidad de muertes y la precipitaciones por provincias no muestra una correlación aparente, en aquellas provincias con picos más altos en precipitaciones, tienen menor cantidad de fallecidos, a excepción de Madrid y Barcelona posiblemente por la gran cantidad de población, esto ocurre debido a que las precipitaciones arrastran las particulas en suspensión del aire[1] reuduciendo asi el consumo de este aire contaminado y reduciendo la cantidad de enfermedades respiratorias. 
+
+
+
+
+## Conclusiones finales
+
+## Bibliografia
+
+[1] https://maldita.es/clima/20221219/lluvia-reduce-contaminacion-atmosferica-cuanto/
 
