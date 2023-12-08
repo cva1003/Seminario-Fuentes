@@ -2,7 +2,7 @@
 Somos 3 estudiantes del Grado de Ingeniería de la salud de la universidad de burgos, estamos realizando un estudio sobre la posible relación entre las defunciones por enfermedades respiratorias y la cantidad de zonas verdes de 37 provincias de España.
 
 Hemos recogido datos de defunciones de todas las provincias españolas por miles de personas, estos datos estan separados por sexo, y años entre 2021 y 2010.
-Los datos recogidos de zonas verdes corresponden a un total de 37 provinincias, y se pueden observar el numero total de población, parques en m^2/habitante y el total de km^2.
+Los datos recogidos de zonas verdes corresponden a un total de 48 provinincias, y se pueden observar el numero total de población, parques en m^2/habitante y el total de km^2.
 Tambien hemos recogido la cantidad de centros sanitarios por provincia para comprobar si el la cantidad de estos tambien influyen en la salud de los habitantes.
 Y por ultimo hemos recogido información de la base de datos de la aemet.
 
