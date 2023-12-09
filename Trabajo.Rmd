@@ -90,6 +90,7 @@ datatable(defuncion_resp_hombres)
 #### Histograma de defunciones por enfermedades respiratorias de hombres y mujeres por Provincia
 ```{r combinar}
 defuncion_resp_combinada <- inner_join(defuncion_resp_hombres, defuncion_resp_mujeres, by = "Provincia")
+defuncion_resp_combinada
 ggplot(defuncion_resp_combinada, aes(x =reorder( Provincia, - defunciones_hombres))) +
   geom_bar(aes(y = defunciones_hombres, fill = "Hombres"), position = "dodge", stat = "identity") +
   geom_bar(aes(y = defunciones_mujeres, fill = "Mujeres"), position = "dodge", stat = "identity") +
@@ -108,7 +109,6 @@ zonas_verdes <- read_excel("zonas_verdes.xlsx")
 datatable(zonas_verdes)
 
 ```
-
 
 #### Mapa de la cantidad de zonas verdes m²/hab
 
@@ -140,8 +140,7 @@ label.size = 0
   theme(legend.position = c(0.1, 0.6))
 
 ```
-
-
+Observando el mapa anterior se puede ver que las provincias mas verdes de España se encuentran en la comunidad autonoma de Castilla y León, donde destacan Burgos y Soria, y no muy lejos se encuentra Guadalajara.Sin embargo,el sur se encuentran las mas secas y con menor porcentaje de zonas verdes entre las cuales destacan Málaga y Cádiz con 2,92 y 1,8 % respectivamente.
 
 ### 4.3 Número de hospitales por provincia.
 ```{r conteo por provincia}
@@ -171,7 +170,7 @@ ggplot(conteo_por_provincia, aes(x = Provincia, y = Numero_Hospitales)) +
 ```{r Lluvias por provincia}
 aemet_api_key("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjbGF1ZGlhdmFsZ3VAZ21haWwuY29tIiwianRpIjoiMTU3MmFlYmMtNDU0My00ZjJiLTgyYjgtY2M0NTI2NWY2YTNmIiwiaXNzIjoiQUVNRVQiLCJpYXQiOjE2OTkyNjIzMDUsInVzZXJJZCI6IjE1NzJhZWJjLTQ1NDMtNGYyYi04MmI4LWNjNDUyNjVmNmEzZiIsInJvbGUiOiIifQ.X2uwTqNh9qDeaoVJSlEgO4oCN_YpqRAVRlgxsV0BUtU",install=TRUE, overwrite = TRUE)
 estaciones<- aemet_stations()
-valores_unicos <- unique(estaciones$provincia)
+#valores_unicos <- unique(estaciones$provincia)
 datatable(estaciones)
 ```
 
@@ -189,14 +188,14 @@ data_monthlyprom <- data_monthlysi %>%
   summarize(promedio_precipitacion = mean(p_mes, na.rm = TRUE))
 datatable(data_monthlyprom)#son litros/m^2
 ```
-
+En la tabla anterior solo filtramos aquellos datos que nos interesan, las precipitaciones.
 #### Asociacion a cada provincias
 ```{r Asociacion a cada provincias}
 resultado <- left_join(data_monthlyprom, estaciones, by = "indicativo") %>%
   select(indicativo, provincia, everything())
 datatable(resultado)
 ```
-
+Filtramos altitud de la primera tabla obtemida junto a la provincia con su promedio de precipitaciones.
 #### Agrupacion por provincia
 ```{r Agrupacion por provincia}
 # Seleccionar un rango de columnas
@@ -239,7 +238,7 @@ ggplot(data = filtrado_resp, aes(x = `Parques m²/hab`, y =defunciones))+
   geom_smooth(colour = "black")+#linea de tendencia
   labs(x = "Porcentaje zonas verdes", y = "Numero de defunciones")
 ```
-Visualizando el grafico anterior
+Visualizando el grafico anterior, se puede ver la linea de tendencia a medida que aumenta el porcentaje de zonas verdes esta se mantiene algo constante pero apartir del 25% vemos que baja un poco, lo que podriamos deducir es que puede haber una ligera proporcionalidad inversa  entre zonas verdes y la cantidad de defunciones en este año. Tambien cabe destacar las dos capitales nacionales, Barcelona y Madrid, que se muestran diferenciadas por su posicion en la parte alta del grafico dedbido a los altos numeros de defunciones donde se puede observar que ambas estan por debajo del punto critico de la linea de tendencia, 25%. Este grafico contrasta el porcentaje de zonas verdes respecto a la cantidad de defunciones anual pero no muestra una relacion muy clara entre ambas variables. 
 
 ### 4.6 Filtración hospitales con la cantidad de zonas verdes
 ```{r Combinación cantidad de hospitales y zonas}
@@ -316,6 +315,7 @@ Se puede observar como la cantidad de muertes y la precipitaciones por provincia
 
 
 ## Conclusiones finales
+
 
 ## Bibliografia
 
