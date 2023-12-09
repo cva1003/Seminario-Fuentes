@@ -223,6 +223,9 @@ ggplot(datos_grafico, aes(x = reorder(provincia,-precip_total), y = precip_total
        color = "Altitud Media") +
   theme(axis.text.x = element_text(angle = 90, hjust =1, size = 6))
 ```
+El grafico anterior se muestran las precipitaciones del año 2020. Se puede observar que no hay una definida proporcionalidad directa entre altitud y cantidad de precipitaciones como se nos enseña desde siempre, ya que no es el unico factor influyente, tambien influye la porximidad al agua como se puede ver con las 4 porvincias que encabezan el grafico. La ubicación geográfica,los vientos dominantes, la topografía, la temperatura y los fenómenos climáticos son elementos que con un comportamiento en conjunto dificultan la prediccion de las precipitaciones de cada region.
+Es importante señalar que los impactos de la actividad humana en el clima y la precipitación son complejos y pueden causar grandes variaciones según la región.
+
 
 ### 4.5 Filtración de datos muertes con zonas verdes
 ```{r Filtracion}
@@ -315,7 +318,7 @@ Se puede observar como la cantidad de muertes y la precipitaciones por provincia
 
 
 ## Conclusiones finales
-
+Analizados cada uno de los apartados se
 
 ## Bibliografia
 
