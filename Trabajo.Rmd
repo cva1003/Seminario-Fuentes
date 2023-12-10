@@ -318,10 +318,20 @@ Se puede observar como la cantidad de muertes y la precipitaciones por provincia
 
 
 ## Conclusiones finales
-Analizados cada uno de los apartados observamos que entre los tres factores existe una relación compleja donde cabe destacar la intrincada conexion entre los elementos y puede verse afectada por diversas influencias locales, que entre ellos se incluyen aspectos socioeconomicos, demograficos e infraestructurales.
-Las áreas más verdes, al ofrecer ventajas medioambientales y de bienestar, tienen el potencial de mejorar la salud global de la población al disminuir algunos peligros. A pesar de que las lluvias son beneficiosas para la vegetación, también pueden plantear desafíos en cuanto a riesgos para la salud, como inundaciones y enfermedades vinculadas al agua.
-Tras estudiar estos datos y analizarlos ded manera detallada obtenemos unos resultados que destacan la importancia de adoptar un enfoque integral para abordar tanto la salud pública como la gestión ambiental.
-## Bibliografia
+Analizados cada uno de los apartados observamos que entre los tres factores existe una relación compleja donde cabe destacar la intrincada conexion entre los elementos y puede verse afectada por diversas influencias locales, que entre ellos se incluyen aspectos socioeconomicos, demograficos e infraestructurales, los cuales no hemos analizado, por lo cual no podemos sacar conclusiones de una relacción global.
 
+Las áreas verdes, al ofrecer ventajas medioambientales y de bienestar, tienen el potencial de mejorar la salud global de la población como un aumento en la esperanza de vida, menor cantidad de enfermedades cardiovasculares y respratorias,mejor salud mental,Reducción de la mortalidad prematura, mejores funciones cognitivas en la infacia, asi como mayoy salud en ancianos y bebes [2][3]. 
+
+Las lluvias son beneficiosas tanto para el ser humano como para la biodiversidad y conservación de esta; en el ser humano ayuda tanto mentalmente como fisicamente, la lluvia hace que el aire se vuelva más limpio y purificado(eliminando contaminación y grandes cantidades de polen en suspensión), favoreciendo así la respiración de las personas.
+Estas también pueden plantear desafíos en cuanto a riesgos para la salud, como inundaciones y enfermedades vinculadas al agua.
+
+Tras estudiar estos datos y analizarlos de manera detallada podemos afirmar que vivir en ciudades con zonas verdes y lluvias disminuye el fallecimiento por enfermedades respiratorias ya que las personas tienden a enfermemar menos en las vias respiratorias.
+
+A pesar de todo lo mencionado, no debemos olvidar que las enfermedades en el ser humano depende de otras variables no estudiadas en este estudio como la genetica, el trabajo, los habitos....
+
+## Bibliografia
 [1] https://maldita.es/clima/20221219/lluvia-reduce-contaminacion-atmosferica-cuanto/
+
+[2] https://www.isglobal.org/healthisglobal/-/custom-blog-portlet/why-more-green-space-is-essential-for-cities#:~:text=Los%20espacios%20verdes%20est%C3%A1n%20asociados,mayores%2C%20y%20beb%C3%A9s%20m%C3%A1s%20sanos.
+[3] https://es.greenpeace.org/es/noticias/regla-3-30-300-ciudades-verdes/
 
