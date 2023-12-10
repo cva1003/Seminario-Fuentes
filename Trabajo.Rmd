@@ -245,14 +245,8 @@ Visualizando el grafico anterior, se puede ver la linea de tendencia a medida qu
 
 ### 4.6 Filtración hospitales con la cantidad de zonas verdes
 ```{r Combinación cantidad de hospitales y zonas}
-conteo_por_provincia <- datos %>%
-  group_by(Provincia) %>%
-  summarize(Numero_Hospitales = n_distinct(`Nombre Centro`))
 
-# Combinamos datos
 datos_combinados <- inner_join(conteo_por_provincia, zonas_verdes, by = "Provincia")
-
-# Mostramos el resultado
 datatable(datos_combinados)
 
 ```
@@ -318,16 +312,15 @@ Se puede observar como la cantidad de muertes y la precipitaciones por provincia
 
 
 ## Conclusiones finales
-Analizados cada uno de los apartados observamos que entre los tres factores existe una relación compleja donde cabe destacar la intrincada conexion entre los elementos y puede verse afectada por diversas influencias locales, que entre ellos se incluyen aspectos socioeconomicos, demograficos e infraestructurales, los cuales no hemos analizado, por lo cual no podemos sacar conclusiones de una relacción global.
+Analizados cada uno de los apartados, observamos que entre los tres factores existe una relación compleja donde cabe destacar la intrincada conexion entre los elementos y puede verse afectada por diversas influencias locales, que entre ellos se incluyen aspectos socioeconomicos, demograficos e infraestructurales, los cuales no hemos analizado, por lo cual no podemos sacar conclusiones de una relacción global.
 
-Las áreas verdes, al ofrecer ventajas medioambientales y de bienestar, tienen el potencial de mejorar la salud global de la población como un aumento en la esperanza de vida, menor cantidad de enfermedades cardiovasculares y respratorias,mejor salud mental,Reducción de la mortalidad prematura, mejores funciones cognitivas en la infacia, asi como mayoy salud en ancianos y bebes [2][3]. 
+Las áreas verdes, al ofrecer ventajas medioambientales y de bienestar, tienen el potencial de mejorar la salud global de la población como un aumento en la esperanza de vida, menor cantidad de enfermedades cardiovasculares y respratorias,mejor salud mental,Reducción de la mortalidad prematura, mejores funciones cognitivas en la infacia, asi como mejor salud en ancianos y bebes [2][3]. 
 
 Las lluvias son beneficiosas tanto para el ser humano como para la biodiversidad y conservación de esta; en el ser humano ayuda tanto mentalmente como fisicamente, la lluvia hace que el aire se vuelva más limpio y purificado(eliminando contaminación y grandes cantidades de polen en suspensión), favoreciendo así la respiración de las personas.
 Estas también pueden plantear desafíos en cuanto a riesgos para la salud, como inundaciones y enfermedades vinculadas al agua.
+Por otro lado, se ha visto reflejado que el número de hospitales va asociado a la cantidad de población, pero no por esto se producen mas defunciones ya que la cantidad de defunciones también va acompañada a la cantidad de población, con lo cuál se puede concluir que el número de hospitales es una herramienta util para desglosar este acontecimiento pero a su vez no hay una correlación grande entre ellas.
 
-Tras estudiar estos datos y analizarlos de manera detallada podemos afirmar que vivir en ciudades con zonas verdes y lluvias disminuye el fallecimiento por enfermedades respiratorias ya que las personas tienden a enfermemar menos en las vias respiratorias.
-
-A pesar de todo lo mencionado, no debemos olvidar que las enfermedades en el ser humano depende de otras variables no estudiadas en este estudio como la genetica, el trabajo, los habitos....
+Tras estudiar estos datos y analizarlos de manera detallada podemos afirmar que vivir en ciudades con zonas verdes y lluvias disminuye el fallecimiento por enfermedades respiratorias ya que las personas tienden a enfermar menos en las vias respiratorias.
 
 ## Bibliografia
 [1] https://maldita.es/clima/20221219/lluvia-reduce-contaminacion-atmosferica-cuanto/
