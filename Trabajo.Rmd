@@ -30,7 +30,7 @@ El objetivo principal de nuestro proyecto es determinar una posible relación en
 Tambien vamos a comparar los resultados con la cantidad de centros de salud para contrastar si tambien es un problema por falta de medios sanitarios o solo medioambientales
 
 ## 3.Conjunto de datos
-Hemos recogido datos de bases de datos diferentes, entre ellas encontramos la aemet, el ine, el ministerio de sanidad y el diario AS.
+Hemos recogido datos de bases de datos diferentes, entre ellas encontramos la aemet, el ine, el ministerio de sanidad y el diario AS. También hemos recurrido a varios articulos geograficos y webs oficiales de ciertos ayuntamientos para completar la busqueda de datos de zonas verdes.
 
 Vamos a trabajar con ellos en el formato .xlsx
 
@@ -53,7 +53,7 @@ library(sf)
 library(gridExtra)
 ```
 ### 4.1Datos de defunciones por enfermedades respiratorias
-```{r defunciones, echo=TRUE}
+```{r defunciones, echo=FALSE}
 defuncion <-read_excel("defunciones.xlsx")
 defuncion_resp<-defuncion %>%
   slice(1337:1500)%>%
@@ -90,7 +90,8 @@ datatable(defuncion_resp_hombres)
 #### Histograma de defunciones por enfermedades respiratorias de hombres y mujeres por Provincia
 ```{r combinar}
 defuncion_resp_combinada <- inner_join(defuncion_resp_hombres, defuncion_resp_mujeres, by = "Provincia")
-defuncion_resp_combinada
+datatable(defuncion_resp_combinada)
+
 ggplot(defuncion_resp_combinada, aes(x =reorder( Provincia, - defunciones_hombres))) +
   geom_bar(aes(y = defunciones_hombres, fill = "Hombres"), position = "dodge", stat = "identity") +
   geom_bar(aes(y = defunciones_mujeres, fill = "Mujeres"), position = "dodge", stat = "identity") +
@@ -170,7 +171,6 @@ ggplot(conteo_por_provincia, aes(x = Provincia, y = Numero_Hospitales)) +
 ```{r Lluvias por provincia}
 aemet_api_key("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjbGF1ZGlhdmFsZ3VAZ21haWwuY29tIiwianRpIjoiMTU3MmFlYmMtNDU0My00ZjJiLTgyYjgtY2M0NTI2NWY2YTNmIiwiaXNzIjoiQUVNRVQiLCJpYXQiOjE2OTkyNjIzMDUsInVzZXJJZCI6IjE1NzJhZWJjLTQ1NDMtNGYyYi04MmI4LWNjNDUyNjVmNmEzZiIsInJvbGUiOiIifQ.X2uwTqNh9qDeaoVJSlEgO4oCN_YpqRAVRlgxsV0BUtU",install=TRUE, overwrite = TRUE)
 estaciones<- aemet_stations()
-#valores_unicos <- unique(estaciones$provincia)
 datatable(estaciones)
 ```
 
@@ -252,7 +252,7 @@ datatable(datos_combinados)
 ```
 #### Gráfico de barras apiladas de nº de hospitales con cantidad de zonas verdes.
 ```{r Gráfico de barras apiladas de nº de hospitales con cantidad de zonas verdes.}
-ggplot(datos_combinados, aes(x = Provincia)) +
+ggplot(datos_combinados, aes(x = reorder(Provincia, -`Parques m²/hab` ))) +
   geom_bar(aes(y = `Parques m²/hab`, fill = "Zonas Verdes"), stat = "identity") +
   geom_bar(aes(y = Numero_Hospitales, fill = "Hospitales"), stat = "identity") +
   labs(title = "Zonas Verdes y Hospitales por Provincia",
